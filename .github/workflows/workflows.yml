@@ -57,3 +57,28 @@ jobs:
       - name: Push Docker image
         run: |
           docker push <edouardgaignerot>/memory
+  deploy-memory:
+    runs-on: note
+    needs: push-memory
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy to server
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.SSH_USERNAME }}
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          # Save the SSH key to a file
+          echo "$SSH_KEY" > private_key
+          chmod 600 private_key
+
+          # SSH into the server
+          ssh -i private_key -o StrictHostKeyChecking=no $USERNAME@$HOST << 'EOF'
+            # Pull the latest Docker image
+            docker pull <username>/memory
+
+            # Run the Docker container
+            docker run -d -p 80:80 <username>/memory
+          EOF
