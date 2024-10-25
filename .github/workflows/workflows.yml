@@ -43,4 +43,41 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t <edouardgaignerot>/memory .
+          docker build -t edouardgaignerot/memory .
+  push-memory:
+    runs-on: self-hosted
+    needs: build-memory
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Push Docker image
+        run: |
+          docker push edouardgaignerot/memory
+  deploy-memory:
+    runs-on: self-hosted
+    needs: push-memory
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy to server (use docker compose)
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.SSH_USERNAME }}
+          SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          
+          echo "$SSH_KEY" > private_key
+          chmod 600 private_key
+
+          
+           # SSH into the server
+          ssh -i private_key -o StrictHostKeyChecking=no $USERNAME@$HOST << 'EOF'
+            cd memory  #chemin du docker-compose.yml
+            docker-compose pull
+            docker-compose up -d
+          EOF

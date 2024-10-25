@@ -1,4 +1,5 @@
-# Jeu du Memory
+# Jeu du Memory 
+
 
 Ce repo permet de lancer un serveur web permettant de jouer au jeu du memory
 
@@ -18,3 +19,5 @@ Remplacer le fichier de config nginx (/etc/nginx/nginx.conf) par notre config sp
 Ajouter nos sources dans /var/concentration/html/
 
 Lancer le serveur nginx
+
+#test

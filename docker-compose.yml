@@ -1,0 +1,7 @@
+
+services:
+  memory:  # Nom du service
+    image: memory-game
+    ports:
+      - "80:80"  # Redirige le port 80 du conteneur vers le port 80 de l'hôte
+    restart: unless-stopped  # Redémarre le conteneur sauf si arrêté manuellement
