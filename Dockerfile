@@ -1,6 +1,9 @@
 # Utiliser une image de base NGINX
 FROM nginx:latest
 
+# Installer le package 'file'
+RUN apt-get update && apt-get install -y file && rm -rf /var/lib/apt/lists/*
+
 # Copier le fichier de configuration NGINX personnalisé
 COPY conf/nginx.conf /etc/nginx/nginx.conf
 
