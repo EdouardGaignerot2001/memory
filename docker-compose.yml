@@ -1,0 +1,8 @@
+version: '3.8'  # Utiliser une version récente de la syntaxe Docker Compose
+
+services:
+  memory:  # Nom du service
+    image: <edouardgaignerot>/memory  
+    ports:
+      - "80:80"  # Redirige le port 80 du conteneur vers le port 80 de l'hôte
+    restart: unless-stopped  # Redémarre le conteneur sauf si arrêté manuellement
