@@ -33,3 +33,14 @@ jobs:
               echo "$file est un fichier JPEG valide."
             fi
           done
+
+  build-memory:
+    runs-on: note
+    needs: test-memory  # Dépend du job test-memory
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: |
+          docker build -t <edouardgaignerot>/memory .
