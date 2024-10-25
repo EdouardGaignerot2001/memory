@@ -45,7 +45,7 @@ jobs:
         run: |
           docker build -t edouardgaignerot/memory .
   push-memory:
-    runs-on: note
+    runs-on: self-hosted
     needs: build-memory
     steps:
       - name: Checkout code
@@ -58,7 +58,7 @@ jobs:
         run: |
           docker push edouardgaignerot/memory
   deploy-memory:
-    runs-on: note
+    runs-on: self-hosted
     needs: push-memory
     steps:
       - name: Checkout code
