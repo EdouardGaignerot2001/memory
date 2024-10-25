@@ -43,7 +43,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t <edouardgaignerot>/memory .
+          docker build -t edouardgaignerot/memory .
   push-memory:
     runs-on: note
     needs: build-memory
@@ -56,7 +56,7 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker push <edouardgaignerot>/memory
+          docker push edouardgaignerot/memory
   deploy-memory:
     runs-on: note
     needs: push-memory
