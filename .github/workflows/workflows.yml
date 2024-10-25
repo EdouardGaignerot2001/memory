@@ -1,0 +1,35 @@
+name: Test Memory Workflow
+
+# Déclencheur du workflow
+on:
+  push:
+    branches:
+      - develop
+
+# Jobs à exécuter dans le workflow
+jobs:
+  test-memory:
+    # Type de runner (self-hosted)
+    runs-on: note
+
+    steps:
+      # Étape 1 : Vérifier le code source
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Étape 2 : Vérifier les fichiers JPEG
+      - name: Test JPEG files
+        shell: bash
+        run: |
+          # Parcours de tous les fichiers .jpg dans le dépôt
+          for file in $(find . -name "*.jpg"); do
+            # Utilisation de la commande 'file' pour vérifier chaque fichier
+            if ! file "$file" | grep -q "JPEG image data"; then
+              echo "Le fichier $file est corrompu. Remplacement requis."
+              # Remplacer par un fichier JPEG
+              cp ./image/Unknown.jpeg "$file"
+              echo "$file remplacé par Unknown.jpeg."
+            else
+              echo "$file est un fichier JPEG valide."
+            fi
+          done
